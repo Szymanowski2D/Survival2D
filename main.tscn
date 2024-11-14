@@ -67,7 +67,8 @@ stream = SubResource("AudioStreamOggVorbis_hf3ct")
 [node name="DeathSound" type="AudioStreamPlayer" parent="."]
 stream = ExtResource("6_n66bj")
 
-[connection signal="hit" from="Player" to="." method="game_over"]
+[connection signal="dead" from="Player" to="." method="game_over"]
+[connection signal="hit" from="Player" to="." method="hit"]
 [connection signal="timeout" from="MobTimer" to="." method="_on_mob_timer_timeout"]
 [connection signal="timeout" from="BulletTimer" to="." method="_on_bullet_timer_timeout"]
 [connection signal="timeout" from="ScoreTimer" to="." method="_on_score_timer_timeout"]

@@ -1,17 +1,20 @@
 extends Area2D
 
 signal hit
+signal dead
 
 @export var speed = 400
 var screen_size
+var life
 
 # Called when the node enters the scene tree for the first time.
 func _ready() -> void:
 	screen_size = get_viewport_rect().size
 	hide()
 	
-func start(pos):
+func start(pos, hp):
 	position = pos
+	life = hp
 	show()
 	$CollisionShape2D.disabled = false
 
@@ -46,6 +49,15 @@ func _process(delta: float) -> void:
 
 
 func _on_body_entered(body: Node2D) -> void:
-	hide()
-	hit.emit()
+	life -= 1
+	if life == 0:
+		dead.emit()
+	else:
+		hit.emit()
+		$PhantomTimer.start()
+
 	$CollisionShape2D.set_deferred("disabled", true)
+
+
+func _on_phantom_timer_timeout() -> void:
+	$CollisionShape2D.set_deferred("disabled", false)
